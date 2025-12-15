@@ -1,167 +1,169 @@
-![Uploading image.png…]()
+![Project Banner](image.png)
 
-
-# AI-Assisted Network Traffic Forensics for Intrusion Detection  
+# AI-Assisted Network Traffic Forensics for Intrusion Detection
 *Developed by Ahmed Mahmoud*
 
-This project implements a real-time Intrusion Detection System (IDS) powered by Machine Learning to analyze network traffic, detect anomalies, and identify cyber threats in real-time.
+AI-assisted network forensics project that implements a real-time Intrusion Detection System (IDS) powered by Machine Learning to analyze network traffic, detect anomalies, and support post-incident investigation.
 
 ---
 
 ## 🚀 Overview
+The system captures and processes network traffic using **Suricata** and **Zeek**, then applies a trained **Random Forest** model to classify flows as **Normal** or **Malicious**.
 
-The system captures and processes network traffic using **Suricata** and **Zeek**, then applies a trained **Random Forest model** to classify network flows as *normal* or *malicious*.  
-It includes automated monitoring, visualization dashboards, and post-incident forensic tools.
-
----
-
-## 🧠 Features
-
-- **Real-time Network Monitoring** – Continuous capture and classification of live traffic  
-- **Machine Learning Detection** – Random Forest classifier for anomaly detection  
-- **Traffic Visualization** – Streamlit-based dashboard with graphs and alerts  
-- **Forensic Analysis** – CSV logs and visual reports for post-event analysis  
-- **Simulation Mode** – Supports simulated network data for offline testing  
-- **Cross-Tool Integration** – Works with Suricata, Zeek, and Wireshark  
+It includes monitoring, visualization dashboards, and forensic outputs to help with investigation and reporting.
 
 ---
 
-## 🧩 Project Structure
-```
+## 🧠 Key Features
+- **Real-time Monitoring**: Capture and classify live traffic continuously
+- **Machine Learning Detection**: Random Forest-based anomaly/threat classification
+- **Visualization Dashboard**: Streamlit dashboard with graphs and alerts
+- **Forensics & Reporting**: CSV logs + visual reports for post-event analysis
+- **Simulation Mode**: Offline testing using simulated/recorded datasets
+- **Cross-Tool Integration**: Suricata, Zeek, Wireshark workflows supported
+
+---
+
+## 📂 Project Structure
+```text
 AI-Assisted Network Traffic Forensics/
 ├── models/
-│ ├── scaler.joblib # Data scaler for preprocessing
-│ └── target_column.txt # Target column used for training
+│   ├── scaler.joblib                 # Data scaler for preprocessing
+│   └── target_column.txt             # Target column used for training
 │
 ├── p/
-│ ├── confusion_matrix.png # Model performance visualization
-│ └── feature_importance.png # Top features used by the ML model
+│   ├── confusion_matrix.png          # Model performance visualization
+│   └── feature_importance.png        # Feature importance chart
 │
 ├── suricata_logs/
-│ ├── traffc.pcap # Raw network traffic capture
-│ └── csv/
-│ ├── suricata_flows.csv # Raw flow data
-│ ├── suricata_flows_with_label.csv # Labeled training data
-│ ├── suricata_flows_with_predictions.csv # Model predictions
-│ ├── prediction_errors.csv # Misclassified samples
-│ └── traffic_analysis_20250419_150051.csv # Analysis summary
+│   ├── traffic.pcap                  # Raw network traffic capture
+│   └── csv/
+│       ├── suricata_flows.csv
+│       ├── suricata_flows_with_label.csv
+│       ├── suricata_flows_with_predictions.csv
+│       ├── prediction_errors.csv
+│       └── traffic_analysis_YYYYMMDD_HHMMSS.csv
 │
-├── dashboard.py # Streamlit dashboard for visualization
-├── EDA Script.py # Exploratory Data Analysis
-├── ml_gui.py # GUI version of the ML system
-├── run_ml_gui.bat # Batch file to launch the GUI (Windows)
-├── predict.py # Predicts new traffic samples
-├── realtime_detection.py # Real-time IDS monitoring
-├── README.md # Project documentation
-└── ml_gui_README.md # GUI-specific documentation
+├── dashboard.py                      # Streamlit dashboard
+├── EDA Script.py                     # Exploratory Data Analysis
+├── ml_gui.py                         # GUI version
+├── run_ml_gui.bat                    # Windows launcher for GUI
+├── predict.py                        # Predict new traffic samples
+├── realtime_detection.py             # Real-time IDS monitoring
+├── ml_gui_README.md                  # GUI documentation
+└── README.md                         # Project documentation
 ```
 ---
+###Detection Workflow (ASCII)
 
-## ⚙️ Requirements
+```
+┌───────────────────────────────┐
+│     Traffic Source            │
+│ (Live Interface / PCAP File)  │
+└───────────────┬───────────────┘
+                ▼
+┌───────────────────────────────┐
+│  Suricata / Zeek Processing   │
+│  - Extract events & flows     │
+│  - Generate structured logs   │
+└───────────────┬───────────────┘
+                ▼
+┌───────────────────────────────┐
+│ Feature Engineering & Parsing │
+│ - Clean + scale features      │
+│ - Build flow-based dataset    │
+└───────────────┬───────────────┘
+                ▼
+┌───────────────────────────────┐
+│  ML Classification (RF Model) │
+│ - Normal vs Malicious         │
+└───────────────┬───────────────┘
+                ▼
+┌───────────────────────────────┐
+│ Alerts + Dashboard + Reports  │
+│ - Streamlit visualization     │
+│ - CSV outputs for forensics   │
+└───────────────────────────────┘
+```
+---
+⚙️ Requirements
 
-- **Python** ≥ 3.8  
-- **Suricata IDS**  
-- **Zeek (Bro)**  
-- **Wireshark**  
-- **Python Libraries**  
+Python ≥ 3.8
 
-
-  ```bash
-  pip install pandas scikit-learn joblib matplotlib seaborn streamlit
-🛠️ Installation
-Install Suricata, Wireshark, and Zeek following their official documentation.
-Core Standard Libraries Used:
-os, sys, time, json, argparse, logging, datetime, threading, subprocess, signal
-
-These handle system interaction, logging, real-time execution, and thread control.Clone the repository:
-
-bash
-نسخ الكود
-git clone https://github.com/ahme-mahmoud/network-traffic-forensics.git
-cd network-traffic-forensics
-Install required dependencies:
-
-bash
-نسخ الكود
-pip install -r requirements.txt
-🧪 Usage
-1️⃣ Data Collection
-Capture live traffic using Suricata:
-
-bash
-sudo suricata -c /etc/suricata/suricata.yaml -i eth0 --set outputs.eve-log.filename=eve.json
-2️⃣ Train the Model
-bash
-python ML.py
-This trains the Random Forest model and saves it under models/.
-
-3️⃣ Real-time Detection
-bash
-python realtime_detection.py --interface eth0
-For simulated data:
-
-bash
-python realtime_detection.py --simulate
-4️⃣ Visualization Dashboard
-bash
-streamlit run dashboard.py
-Then open http://localhost:8501.
-
-🖥️ Running the GUI (run_ml_gui.bat)
-For Windows users, you can start the complete GUI-based system by simply double-clicking:
-
-نسخ الكود
-run_ml_gui.bat
-The GUI will launch automatically, allowing you to train models, visualize traffic, and detect anomalies.
-
-⚠️ Important Note:
-Make sure all Python libraries are installed before running the .bat file.
-You can install them using:
-
-bash
-pip install -r requirements.txt
-Once installed, the .bat file will work from the first run with no extra setup.
-
-🤖 Machine Learning Approach
-The system uses a Random Forest Classifier trained on extracted flow-based features, such as:
-
-Packet counts (to/from client and server)
-
-Byte counts
-
-TCP flags (SYN, ACK, RST)
-
-Flow duration
-
-Source and destination ports
-
-Each flow is labeled as normal or malicious to train the model effectively.
-
-🔮 Future Enhancements
-Integration with Threat Intelligence APIs
-
-Support for LSTM and Isolation Forest models
-
-Enhanced analytics with heatmaps and timelines
-
-Automated threat response actions
-
-Distributed detection for large-scale networks
-
-📜 License
-MIT License
-
-👨‍💻 Contributor
-Ahmed Mahmoud
-Junior Penetration Tester | Cybersecurity Student @ SUT | Offensive Security | Building AI-powered Security Tools
-🔗 LinkedIn
-📝 Medium
-
-🙌 Acknowledgments
-Suricata Project
+Suricata
 
 Wireshark
 
-Zeek Project
+Python packages:
 
-scikit-learn
+pip install pandas scikit-learn joblib matplotlib seaborn streamlit
+🛠 Installation
+
+Clone the repository:
+
+git clone https://github.com/ahme-mahmoud/network-traffic-forensics.git
+cd network-traffic-forensics
+
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+🧪 Usage
+1) Data Collection (Suricata)
+sudo suricata -c /etc/suricata/suricata.yaml -i eth0 --set outputs.eve-log.filename=eve.json
+
+2) Train the Model
+python ML.py
+
+3) Real-time Detection
+python realtime_detection.py --interface eth0
+
+
+Simulation mode:
+
+python realtime_detection.py --simulate
+
+4) Dashboard
+streamlit run dashboard.py
+
+
+Open: http://localhost:8501
+
+🖥 GUI (Windows)
+
+Run:
+
+run_ml_gui.bat
+
+
+Note: Make sure dependencies are installed first:
+
+pip install -r requirements.txt
+
+🤖 Machine Learning Approach
+
+Random Forest trained on flow-based features such as:
+
+Packet counts (client/server)
+
+Byte counts
+
+TCP flags (SYN/ACK/RST)
+
+Flow duration
+
+Source/Destination ports
+
+🔮 Future Enhancements
+
+Threat Intelligence API integration
+
+Support LSTM / Isolation Forest
+
+Better analytics (heatmaps, timelines)
+
+Automated response actions
+
+Distributed detection for large networks
+
