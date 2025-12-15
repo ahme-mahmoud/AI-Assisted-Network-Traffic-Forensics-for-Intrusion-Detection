@@ -54,7 +54,7 @@ AI-Assisted Network Traffic Forensics/
 └── README.md                         # Project documentation
 ```
 ---
-###Detection Workflow (ASCII)
+Detection Workflow (ASCII)
 
 ```
 ┌───────────────────────────────┐
