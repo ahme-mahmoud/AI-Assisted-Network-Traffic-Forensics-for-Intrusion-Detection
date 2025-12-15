@@ -27,7 +27,7 @@ It includes automated monitoring, visualization dashboards, and post-incident fo
 ---
 
 ## 🧩 Project Structure
-
+```
 AI-Assisted Network Traffic Forensics/
 ├── models/
 │ ├── scaler.joblib # Data scaler for preprocessing
@@ -54,10 +54,7 @@ AI-Assisted Network Traffic Forensics/
 ├── realtime_detection.py # Real-time IDS monitoring
 ├── README.md # Project documentation
 └── ml_gui_README.md # GUI-specific documentation
-
-markdown
-نسخ الكود
-
+```
 ---
 
 ## ⚙️ Requirements
